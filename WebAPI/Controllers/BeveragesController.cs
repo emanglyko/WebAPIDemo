@@ -44,7 +44,6 @@ namespace WebAPI.Controllers
         }
 
         // PUT: api/Beverages/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBeverage(long id, Beverage beverage)
         {
@@ -75,7 +74,6 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/Beverages
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Beverage>> PostBeverage(Beverage beverage)
         {
