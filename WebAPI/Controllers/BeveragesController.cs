@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -16,10 +17,15 @@ namespace WebAPI.Controllers
     public class BeveragesController : ControllerBase
     {
         private readonly NeptuneContext _context;
+        private IConfiguration _configuration;
+        private string _imageDir;
 
-        public BeveragesController(NeptuneContext context)
+        public BeveragesController(NeptuneContext context, IConfiguration configuration)
         {
             _context = context;
+
+            _configuration = configuration;
+            _imageDir = _configuration.GetValue<string>("ImageDir");
         }
 
         // GET: api/Beverages
@@ -138,14 +144,15 @@ namespace WebAPI.Controllers
                 var extension = Path.GetExtension(file.FileName);
                 fileName = DateTime.Now.Ticks + extension; //Create a new Name for the file due to security reasons.
 
-                var pathBuilt = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+                
+                var pathBuilt = Path.Combine(Directory.GetCurrentDirectory(), _imageDir);
 
                 if (!Directory.Exists(pathBuilt))
                 {
                     Directory.CreateDirectory(pathBuilt);
                 }
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "Images",
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _imageDir,
                    fileName);
 
                 using (var stream = new FileStream(path, FileMode.Create))
@@ -157,7 +164,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception e)
             {
-                //log error
+                Console.WriteLine(e.Message);
             }
 
             return isSaveSuccess;

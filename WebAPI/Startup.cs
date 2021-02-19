@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using WebAPI.Controllers;
 
 namespace WebAPI
 {
@@ -29,7 +30,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NeptuneContext>(opt =>
-                                               opt.UseSqlServer("Server=.\\SQLSERVER;Database=Neptune;Trusted_Connection=True;"));
+                                               opt.UseSqlServer(Configuration.GetConnectionString("DatabaseString")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
