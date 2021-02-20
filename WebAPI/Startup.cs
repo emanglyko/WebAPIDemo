@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
 using WebAPI.Controllers;
+using AutoMapper;
+using WebAPI.DTO;
 
 namespace WebAPI
 {
@@ -29,9 +31,15 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //add all automapper mapping profile classes in our assembly
+            services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
+
             services.AddCors(); //to allow API access cross domain
-            services.AddDbContext<NeptuneContext>(opt =>
-                                               opt.UseSqlServer(Configuration.GetConnectionString("DatabaseString")));
+
+            services.AddDbContext<NeptuneContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DatabaseString")));
+
+            services.AddMvc();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

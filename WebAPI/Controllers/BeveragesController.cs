@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WebAPI.Models;
 using WebAPI.DTO;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace WebAPI.Controllers
 {
@@ -18,14 +20,16 @@ namespace WebAPI.Controllers
     public class BeveragesController : ControllerBase
     {
         private readonly NeptuneContext _context;
+        private readonly IMapper _mapper;
         private IConfiguration _configuration;
         private string _imageDir;
 
-        public BeveragesController(NeptuneContext context, IConfiguration configuration)
+        public BeveragesController(NeptuneContext context, IConfiguration configuration, IMapper mapper)
         {
             _context = context;
-
             _configuration = configuration;
+            _mapper = mapper;
+
             _imageDir = _configuration.GetValue<string>("ImageDir");
         }
 
@@ -33,32 +37,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
         {
-            var query = _context.Beverages
-                .Include(bt => bt.TypeNavigation)
-                .Select(bt => new 
-                { 
-                    bt.Id,
-                    bt.Name,
-                    bt.TypeNavigation.Type,
-                    bt.Description,
-                    bt.Dateadded,
-                    bt.Imagefilename
-                }
-                );
-
-            var list = await query.ToListAsync().ConfigureAwait(false);
-
-            return list.Select(bt => new BeverageDTO() 
-            {
-                Id = bt.Id,
-                Name = bt.Name,
-                Type = bt.Type,
-                Description = bt.Description,
-                Dateadded = bt.Dateadded.ToString(),
-                Imagefilename = bt.Imagefilename
-            }).ToList();
-
-            //return await _context.Beverages.ToListAsync();
+            return await _context.Beverages.ProjectTo<BeverageDTO>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         // GET: api/Beverages/5
