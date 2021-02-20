@@ -43,7 +43,15 @@ export class ShowBeverageComponent implements OnInit {
   }
 
   deleteClick(item: any ) {
-
+    if(confirm("Are you sure you want to delete?")) {
+      this.beverage = item;
+      this.service.DeleteBeverage(item).subscribe({
+        //next: (result: any) => {alert(result);},
+        error: (err: any) => {alert('Error, please check all fields');},
+        complete: () => {alert('Success'); this.refreshBeverages();
+        }
+        });
+    }
   }
 
   onClose() {
@@ -56,7 +64,7 @@ export class ShowBeverageComponent implements OnInit {
     //subscribe so it waits for return data. async operation
     this.service.GetBeverages().subscribe(data=> {
       this.BeveragesList = data;
-      console.log("Refreshing beverages: " + data.keys.length);
+      console.log("Refreshing beverages");
     });
   }
 }

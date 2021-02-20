@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from 'src/app/shared.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { SharedService } from 'src/app/shared.service';
 })
 export class AddEditBeverageComponent implements OnInit {
 
-  constructor(private service:SharedService) { }
+  constructor(private service:SharedService,private route: ActivatedRoute, private router: Router) { }
 
   @Input() public beverage:any;
 
@@ -36,8 +37,12 @@ export class AddEditBeverageComponent implements OnInit {
       description:this.BeverageDescription,
       imagefilename:this.BeverageFileName
     };
-    this.service.AddBeverage(val).subscribe(res=>(alert(res.toString())));
-
+    this.service.AddBeverage(val).subscribe({
+      //next: (result: any) => {alert(result);},
+      error: (err: any) => {alert('Error, please check all fields');},
+      complete: () => {alert('Success');
+      }
+      });
   }
 
   updateBeverage() {
@@ -48,6 +53,17 @@ export class AddEditBeverageComponent implements OnInit {
       description:this.BeverageDescription,
       imagefilename:this.BeverageFileName
     };
-    this.service.UpdateBeverage(val).subscribe(res=>(alert(res.toString())));
+    this.service.UpdateBeverage(val).subscribe({
+      //next: (result: any) => {alert(result);},
+      error: (err: any) => {alert('Error, please check all fields');},
+      complete: () => {alert('Success');
+      }
+      });
+  }
+
+  reload() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['./'], { relativeTo: this.route });
   }
 }

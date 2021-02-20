@@ -24,7 +24,7 @@ readonly ImageURL = "https://localhost:44306/Images";
   }
 
   DeleteBeverage(val:any) {
-    return this.http.delete(this.APIUrl + '/Beverages/' + val)
+    return this.http.delete(this.APIUrl + '/Beverages/' + val.id)
   }
 
   GetBeverageTypes():Observable<any[]> {
@@ -36,7 +36,7 @@ readonly ImageURL = "https://localhost:44306/Images";
   }
 
   UpdateBeverageType(val:any) {
-    return this.http.put(this.APIUrl + '/BeverageTypes', val)
+    return this.http.put(this.APIUrl + '/BeverageTypes/' + val.id, val)
   }
 
   DeleteBeverageType(val:any) {

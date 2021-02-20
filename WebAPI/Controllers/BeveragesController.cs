@@ -92,7 +92,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Beverages
@@ -122,7 +122,7 @@ namespace WebAPI.Controllers
             _context.Beverages.Remove(beverage);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool BeverageExists(long id)
