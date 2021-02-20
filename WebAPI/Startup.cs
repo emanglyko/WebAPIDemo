@@ -29,6 +29,7 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(); //to allow API access cross domain
             services.AddDbContext<NeptuneContext>(opt =>
                                                opt.UseSqlServer(Configuration.GetConnectionString("DatabaseString")));
             services.AddControllers();
@@ -48,6 +49,9 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
+
+            //to allow cross site requests
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WebAPI.Models;
+using WebAPI.DTO;
 
 namespace WebAPI.Controllers
 {
@@ -30,9 +31,34 @@ namespace WebAPI.Controllers
 
         // GET: api/Beverages
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Beverage>>> GetBeverages()
+        public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
         {
-            return await _context.Beverages.ToListAsync();
+            var query = _context.Beverages
+                .Include(bt => bt.TypeNavigation)
+                .Select(bt => new 
+                { 
+                    bt.Id,
+                    bt.Name,
+                    bt.TypeNavigation.Type,
+                    bt.Description,
+                    bt.Dateadded,
+                    bt.Imagefilename
+                }
+                );
+
+            var list = await query.ToListAsync().ConfigureAwait(false);
+
+            return list.Select(bt => new BeverageDTO() 
+            {
+                Id = bt.Id,
+                Name = bt.Name,
+                Type = bt.Type,
+                Description = bt.Description,
+                Dateadded = bt.Dateadded.ToString(),
+                Imagefilename = bt.Imagefilename
+            }).ToList();
+
+            //return await _context.Beverages.ToListAsync();
         }
 
         // GET: api/Beverages/5
