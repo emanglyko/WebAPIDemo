@@ -13,17 +13,50 @@ export class ShowBeverageComponent implements OnInit {
 
   BeveragesList:any=[];
 
+  ModalTitle:string="Beverage";
+  ActivateAddEditBeverageComponent:boolean=false;
+  beverage:any;
+
+
   ngOnInit(): void {
-    this.RefreshBeverages();
+    this.refreshBeverages();
   }
 
+  onClick() {
+    console.log("onClick Modal");
+    this.beverage={
+      id:0,
+      name:"",
+      type:"",
+      dateadded:"",
+      description:"",
+      imagefilename:""
+    }
+    this.ModalTitle="Add beverage";
+    this.ActivateAddEditBeverageComponent=true;
+  }
 
-  RefreshBeverages() {
+  editClick(item: any) {
+    this.beverage = item;
+    this.ModalTitle = "Edit Beverage";
+    this.ActivateAddEditBeverageComponent=true;
+  }
+
+  deleteClick(item: any ) {
+
+  }
+
+  onClose() {
+    console.log("OnClose Reached");
+    this.ActivateAddEditBeverageComponent=false;
+    this.refreshBeverages();
+  }
+
+  refreshBeverages() {
     //subscribe so it waits for return data. async operation
     this.service.GetBeverages().subscribe(data=> {
       this.BeveragesList = data;
       console.log("Refreshing beverages: " + data.keys.length);
     });
   }
-
 }

@@ -1,5 +1,25 @@
-
-
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary float-right m-2" data-toggle="modal" data-target="#fadeModal"
+(click)="onClick()" data-backdrop="static" data-keyboard="false"> <!-- Prevent window from closing when clicking outside of it -->
+    Add Beverage
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="fadeModal" tabindex="-1" role="dialog" aria-labelledby="fadeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="fadeModalLabel">{{ModalTitle}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClose()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <app-add-edit-beverage [beverage]="beverage" *ngIf="ActivateAddEditBeverageComponent"></app-add-edit-beverage>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <table class="table table-striped">
     <thead>
@@ -22,8 +42,8 @@
             <td>{{dataItem.dateadded}}</td>
             <td>{{dataItem.imagefilename}}</td>
             <td>
-                <button type="button" class="btn btn-light mr-1">edit</button>
-                <button type="button" class="btn btn-light mr-1">delete</button>
+                <button type="button" class="btn btn-light mr-1" data-toggle="modal" data-target="#fadeModal" (click)="editClick(dataItem)" data-backdrop="static" data-keyboard="false">edit</button>
+                <button type="button" class="btn btn-light mr-1" data-toggle="modal" data-target="#fadeModal" (click)="deleteClick(dataItem)" data-backdrop="static" data-keyboard="false">delete</button>
             </td>
         </tr>
 

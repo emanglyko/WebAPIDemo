@@ -37,27 +37,38 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
         {
-            return await _context.Beverages.ProjectTo<BeverageDTO>(_mapper.ConfigurationProvider).ToListAsync();
+            return await _context.Beverages
+                .ProjectTo<BeverageDTO>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
         // GET: api/Beverages/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Beverage>> GetBeverage(long id)
+        public async Task<ActionResult<BeverageDTO>> GetBeverage(long id)
         {
-            var beverage = await _context.Beverages.FindAsync(id);
+            var beverage = await _context.Beverages
+                .ProjectTo<BeverageDTO>(_mapper.ConfigurationProvider)
+                .Where(bt => bt.Id == id)
+                .FirstAsync();
+
+            //var beverage = await _context.Beverages.FindAsync(id);
 
             if (beverage == null)
             {
                 return NotFound();
             }
 
-            return beverage;
+            var dto = _mapper.Map<BeverageDTO>(beverage);
+
+            return dto;
         }
 
         // PUT: api/Beverages/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBeverage(long id, Beverage beverage)
         {
+            beverage.Dateadded = System.DateTime.Now;
+
             if (id != beverage.Id)
             {
                 return BadRequest();
@@ -88,10 +99,14 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Beverage>> PostBeverage(Beverage beverage)
         {
-            _context.Beverages.Add(beverage);
+            Beverage newBeverage = beverage;
+
+            newBeverage.Dateadded = System.DateTime.Now;
+
+            _context.Beverages.Add(newBeverage);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBeverage", new { id = beverage.Id }, beverage);
+            return CreatedAtAction("PostBeverage", new { id = newBeverage.Id }, newBeverage);
         }
 
         // DELETE: api/Beverages/5

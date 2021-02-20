@@ -20,7 +20,7 @@ readonly ImageURL = "https://localhost:44306/Images";
   }
 
   UpdateBeverage(val:any) {
-    return this.http.put(this.APIUrl + '/Beverages', val)
+    return this.http.put(this.APIUrl + '/Beverages/' + val.id, val)
   }
 
   DeleteBeverage(val:any) {
