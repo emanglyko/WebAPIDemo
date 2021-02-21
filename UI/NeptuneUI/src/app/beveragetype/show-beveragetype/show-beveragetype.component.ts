@@ -44,10 +44,12 @@ export class ShowBeveragetypeComponent implements OnInit {
   deleteClick(item: any ) {
     if(confirm("Are you sure you want to delete?")) {
       this.beveragetype = item;
-      this.service.DeleteBeverageType(item).subscribe(data=> {
-        alert(data.toString());
-      });
-      this.refreshBeverageTypes();
+      this.service.DeleteBeverageType(item).subscribe({
+        //next: (result: any) => {alert(result);},
+        error: (err: any) => {alert('Error, please check all fields. Make sure there are no beverages using this type.');},
+        complete: () => {alert('Success'); this.refreshBeverageTypes();
+        }
+        });
     }
   }
 

@@ -40,7 +40,7 @@ readonly ImageURL = "https://localhost:44306/Images";
   }
 
   DeleteBeverageType(val:any) {
-    return this.http.delete(this.APIUrl + '/BeverageTypes/' + val)
+    return this.http.delete(this.APIUrl + '/BeverageTypes/' + val.id)
   }
 
   UploadImage(val:any) {

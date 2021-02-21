@@ -30,7 +30,7 @@ export class ShowBeverageComponent implements OnInit {
       type:"",
       dateadded:"",
       description:"",
-      imagefilename:""
+      imagefilename:"default.png"
     }
     this.ModalTitle="Add beverage";
     this.ActivateAddEditBeverageComponent=true;

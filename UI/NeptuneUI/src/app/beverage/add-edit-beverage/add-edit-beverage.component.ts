@@ -19,6 +19,9 @@ export class AddEditBeverageComponent implements OnInit {
   BeverageDateAdded:string="";
   BeverageDescription:string="";
   BeverageFileName:string="";
+  BeverageFilePath:string="";
+  
+  BeverageTypeList:any=[];
 
   ngOnInit(): void {
     this.BeverageId = this.beverage.id;
@@ -27,6 +30,13 @@ export class AddEditBeverageComponent implements OnInit {
     this.BeverageDateAdded = this.beverage.dateadded;
     this.BeverageDescription = this.beverage.description;
     this.BeverageFileName = this.beverage.imagefilename;
+    this.BeverageFilePath = this.service.ImageURL + this.BeverageFileName;
+
+    this.loadBeverageTypeList();
+  }
+
+  loadBeverageTypeList() {
+    this.service.GetBeverageTypes().subscribe(data=> this.BeverageTypeList = data);
   }
 
   addBeverage() {

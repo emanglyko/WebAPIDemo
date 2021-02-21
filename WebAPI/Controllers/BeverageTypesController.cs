@@ -94,10 +94,18 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            _context.BeverageTypes.Remove(beverageType);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.BeverageTypes.Remove(beverageType);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest();
+            }
 
-            return NoContent();
+            return Ok();
         }
 
         private bool BeverageTypeExists(int id)
