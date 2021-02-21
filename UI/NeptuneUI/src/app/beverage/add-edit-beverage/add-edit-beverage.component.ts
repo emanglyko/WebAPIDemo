@@ -71,6 +71,18 @@ export class AddEditBeverageComponent implements OnInit {
       });
   }
 
+  uploadImage(event:any) {
+    var file = event.target.files[0];
+    const formData:FormData=new FormData();
+
+    formData.append('file', file);
+    this.service.UploadImage(formData).subscribe((data:any) => {
+      console.log(data);
+      this.BeverageFileName = data.message;
+      this.BeverageFilePath = this.service.ImageURL + this.BeverageFileName;
+    });
+  }
+
   reload() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';

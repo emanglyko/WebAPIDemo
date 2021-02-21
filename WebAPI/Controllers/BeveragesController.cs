@@ -137,28 +137,32 @@ namespace WebAPI.Controllers
               IFormFile file,
               CancellationToken cancellationToken)
         {
+            string filename = string.Empty;
+
             if (CheckValidFileExtension(file))
             {
-                await WriteFile(file);
+                filename = await WriteFile(file);
             }
             else
             {
                 return BadRequest(new { message = "Invalid file extension" });
             }
 
-            return Ok();
+            return Ok(new { message = filename });
         }
 
         private bool CheckValidFileExtension(IFormFile file)
         {
+            if (file == null) return false;
+
             var extension = Path.GetExtension(file.FileName);
             return (extension == ".png" || extension == ".jpg" || extension == ".jpeg"); // Change the extension based on your need
         }
 
-        private async Task<bool> WriteFile(IFormFile file)
+        private async Task<string> WriteFile(IFormFile file)
         {
-            bool isSaveSuccess = false;
-            string fileName;
+            //bool isSaveSuccess = false;
+            string fileName = string.Empty;
             try
             {
                 var extension = Path.GetExtension(file.FileName);
@@ -180,14 +184,14 @@ namespace WebAPI.Controllers
                     await file.CopyToAsync(stream);
                 }
 
-                isSaveSuccess = true;
+                //isSaveSuccess = true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
-            return isSaveSuccess;
+            return fileName;
         }
     }
 }

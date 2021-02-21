@@ -16,6 +16,8 @@ using WebAPI.Models;
 using WebAPI.Controllers;
 using AutoMapper;
 using WebAPI.DTO;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace WebAPI
 {
@@ -57,6 +59,14 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
+
+            app.UseStaticFiles();// For the wwwroot folder
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "Images")),
+                RequestPath = "/Images"
+            });
 
             //to allow cross site requests
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
