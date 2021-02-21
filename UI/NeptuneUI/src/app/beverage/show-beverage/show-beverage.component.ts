@@ -27,6 +27,7 @@ export class ShowBeverageComponent implements OnInit {
     this.beverage={
       id:0,
       name:"",
+      typeid:"",
       type:"",
       dateadded:"",
       description:"",

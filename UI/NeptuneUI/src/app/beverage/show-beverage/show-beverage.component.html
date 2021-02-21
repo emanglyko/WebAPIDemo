@@ -26,6 +26,7 @@
         <tr>
             <th>BeverageID</th>
             <th>Name</th>
+            <th>TypeID</th>
             <th>Type</th>
             <th>Description</th>
             <th>DateAdded</th>
@@ -37,6 +38,7 @@
         <tr *ngFor="let dataItem of BeveragesList">
             <td>{{dataItem.id}}</td>
             <td>{{dataItem.name}}</td>
+            <td>{{dataItem.typeId}}</td>
             <td>{{dataItem.type}}</td>
             <td>{{dataItem.description}}</td>
             <td>{{dataItem.dateadded}}</td>

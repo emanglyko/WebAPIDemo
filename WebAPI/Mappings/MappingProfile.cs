@@ -13,9 +13,11 @@ namespace WebAPI.Mappings
         public MappingProfile ()
         {
             CreateMap<Beverage, BeverageDTO>()
-                .ForMember(dest => dest.Type, o => o.MapFrom(src => src.TypeNavigation.Type));
+                .ForMember(dest => dest.Type, o => o.MapFrom(src => src.TypeNavigation.Type))
+                .ForMember(dest => dest.TypeId, o => o.MapFrom(src => src.Type));
             CreateMap<BeverageDTO, Beverage>()
-                .ForPath(dest => dest.TypeNavigation.Type, o => o.MapFrom(src => src.Type));
+                .ForPath(dest => dest.TypeNavigation.Type, o => o.MapFrom(src => src.Type))
+                .ForPath(dest => dest.Type, o => o.MapFrom(src => src.TypeId));
         }
     }
 }

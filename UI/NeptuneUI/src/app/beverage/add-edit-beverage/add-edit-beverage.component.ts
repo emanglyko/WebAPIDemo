@@ -15,23 +15,26 @@ export class AddEditBeverageComponent implements OnInit {
 
   BeverageId:string="";
   BeverageName:string="";
+  BeverageTypeId:string="";
   BeverageType:string="";
   BeverageDateAdded:string="";
   BeverageDescription:string="";
   BeverageFileName:string="";
   BeverageFilePath:string="";
+  BeverageTypeCombined:string="";
   
   BeverageTypeList:any=[];
 
   ngOnInit(): void {
     this.BeverageId = this.beverage.id;
     this.BeverageName = this.beverage.name;
+    this.BeverageTypeId = this.beverage.typeId;
     this.BeverageType = this.beverage.type;
     this.BeverageDateAdded = this.beverage.dateadded;
     this.BeverageDescription = this.beverage.description;
     this.BeverageFileName = this.beverage.imagefilename;
     this.BeverageFilePath = this.service.ImageURL + this.BeverageFileName;
-
+    this.BeverageTypeCombined = this.BeverageTypeId + ":" + this.BeverageType;
     this.loadBeverageTypeList();
   }
 
@@ -43,7 +46,7 @@ export class AddEditBeverageComponent implements OnInit {
     var val = {
       id:this.BeverageId,
       name:this.BeverageName,
-      type:this.BeverageType,
+      type:this.BeverageTypeCombined.split(":",1)[0],
       description:this.BeverageDescription,
       imagefilename:this.BeverageFileName
     };
@@ -59,7 +62,7 @@ export class AddEditBeverageComponent implements OnInit {
     var val = {
       id:this.BeverageId,
       name:this.BeverageName,
-      type:this.BeverageType,
+      type:this.BeverageTypeCombined.split(":",1)[0],
       description:this.BeverageDescription,
       imagefilename:this.BeverageFileName
     };
@@ -81,6 +84,10 @@ export class AddEditBeverageComponent implements OnInit {
       this.BeverageFileName = data.message;
       this.BeverageFilePath = this.service.ImageURL + this.BeverageFileName;
     });
+  }
+
+  getBeverageTypeId(beveragetype: any, event: Event) {
+    console.log('Selected beveragetype: ', beveragetype, event);
   }
 
   reload() {
