@@ -6,8 +6,8 @@ import {Observable} from 'rxjs'; //used to hande async requests and responses
   providedIn: 'root'
 })
 export class SharedService {
-readonly APIUrl = "https://localhost:44306/api";
-readonly ImageURL = "https://localhost:44306/Images/";
+readonly APIUrl = "http://localhost:5000/api";
+readonly ImageURL = "http://localhost:5000/Images/";
 
   constructor(private http:HttpClient) { }
 

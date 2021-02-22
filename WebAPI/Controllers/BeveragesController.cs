@@ -37,6 +37,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BeverageDTO>>> GetBeverages()
         {
+            Console.WriteLine("Get All Beverages API hit | " + System.DateTime.Now);
             return await _context.Beverages
                 .ProjectTo<BeverageDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync();
@@ -46,6 +47,8 @@ namespace WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BeverageDTO>> GetBeverage(long id)
         {
+            Console.WriteLine("Get Beverages API hit | " + System.DateTime.Now);
+
             var beverage = await _context.Beverages
                 .ProjectTo<BeverageDTO>(_mapper.ConfigurationProvider)
                 .Where(bt => bt.Id == id)
@@ -67,6 +70,8 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBeverage(long id, Beverage beverage)
         {
+            Console.WriteLine("Update Beverage API hit | " + System.DateTime.Now);
+
             beverage.Dateadded = System.DateTime.Now;
 
             if (id != beverage.Id)
@@ -99,6 +104,8 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Beverage>> PostBeverage(Beverage beverage)
         {
+            Console.WriteLine("Add Beverage API hit | " + System.DateTime.Now);
+
             Beverage newBeverage = beverage;
 
             newBeverage.Dateadded = System.DateTime.Now;
@@ -113,6 +120,8 @@ namespace WebAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBeverage(long id)
         {
+            Console.WriteLine("Delete Beverage API hit | " + System.DateTime.Now);
+
             var beverage = await _context.Beverages.FindAsync(id);
             if (beverage == null)
             {
@@ -137,6 +146,8 @@ namespace WebAPI.Controllers
               IFormFile file,
               CancellationToken cancellationToken)
         {
+            Console.WriteLine("Upload Image API hit | " + System.DateTime.Now);
+
             string filename = string.Empty;
 
             if (CheckValidFileExtension(file))
